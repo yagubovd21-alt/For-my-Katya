@@ -4,288 +4,53 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>My Love ♡</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Caveat:wght@700&display=swap" rel="stylesheet">
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    -webkit-tap-highlight-color: transparent; /* Убираем синий квадрат при клике на мобилках */
-}
-
-body{
-    overflow-x: hidden;
-    overflow-y: auto; /* Разрешаем плавный скролл */
-    background: radial-gradient(circle at top,#2b0b38 0%,#120016 45%,#000 100%);
-    min-height: 100vh;
-    font-family:'Montserrat',sans-serif;
-    color:white;
-    position:relative;
-    -webkit-font-smoothing: antialiased;
-}
-
-/* ФОН (Звезды всегда на месте) */
-.stars{
-    position:fixed;
-    inset:0;
-    z-index:0;
-    pointer-events: none;
-}
-
-.star{
-    position:absolute;
-    width:2px;
-    height:2px;
-    background:#ff9ed1;
-    border-radius:50%;
-    animation:blink 3s infinite;
-    opacity: 0.5;
-}
-
-@keyframes blink{ 0%,100%{opacity:.2} 50%{opacity:1} }
-
-/* ГЛАВНЫЙ КОНТЕЙНЕР */
-.main{
-    position:relative;
-    z-index:10;
-    width: 100%;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-start;
-    align-items:center;
-    padding: 70px 20px 40px; /* Увеличили отступ сверху */
-}
-
-.title{
-    font-family:'Caveat',cursive;
-    font-size: clamp(36px, 9vw, 60px);
-    color:#ffb6dd;
-    margin-bottom:30px;
-    text-align: center;
-    text-shadow:0 0 20px rgba(255,105,180,.7);
-}
-
-.love-heart{
-    cursor:pointer;
-    display:inline-block;
-    color: #ff8cca;
-    animation: heartBeat 1.8s infinite;
-}
-
-@keyframes heartBeat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.15); }
-}
-
-/* МОРЗЕ (ФИНАЛЬНОЕ ИСПРАВЛЕНИЕ) */
-.morse-wrapper{
-    width: 100%;
-    max-width: 600px;
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap: 12px;
-    margin-bottom: 40px;
-    /* ЗАПРЕТ ВЫДЕЛЕНИЯ ТЕКСТА */
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none; 
-}
-
-.morse{
-    position:relative;
-    color:#ff9ed1;
-    font-size: 19px;
-    letter-spacing: 2.5px;
-    cursor: pointer;
-}
-
-.tooltip{
-    position:absolute;
-    top: -35px; /* Перевод появляется НАД символом */
-    left:50%;
-    transform:translateX(-50%);
-    background:rgba(20,0,30,0.95);
-    padding:5px 10px;
-    border-radius:8px;
-    font-size:13px;
-    opacity:0;
-    pointer-events:none;
-    transition: opacity 0.2s ease, top 0.2s ease;
-    white-space: nowrap;
-    border: 1px solid rgba(255,180,220,0.2);
-}
-
-/* Работает при касании (touchstart) и клике */
-.morse.active .tooltip { 
-    opacity: 1; 
-    top: -45px;
-}
-
-/* ГЛАВНОЕ ФОТО */
-.center-photo{
-    width: 100%;
-    max-width: 380px;
-    margin-bottom: 40px;
-}
-
-.center-photo img{
-    width: 100%;
-    height: auto;
-    border-radius:25px;
-    border:2px solid rgba(255,180,220,0.2);
-    box-shadow:0 10px 40px rgba(255,105,180,0.3);
-}
-
-/* ПЛЕЕР */
-.player{
-    width: 100%;
-    max-width:320px;
-    padding:20px;
-    border-radius:24px;
-    background:rgba(255,255,255,0.08);
-    backdrop-filter:blur(8px);
-    -webkit-backdrop-filter:blur(8px);
-    border:1px solid rgba(255,180,220,0.15);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.song-name{
-    color:#ffd4ea;
-    font-size:12px;
-    margin-bottom: 12px;
-    text-align: center;
-    font-weight: 300;
-}
-
-.bar{
-    width:100%;
-    height:4px;
-    background:rgba(255,255,255,0.12);
-    border-radius:10px;
-    overflow:hidden;
-}
-
-.bar span{
-    display:block;
-    width:100%;
-    height:100%;
-    background: linear-gradient(90deg, #ff8cca, #ffb6dd);
-    transform: scaleX(0);
-    transform-origin: left;
-}
-
-.playing .bar span {
-    animation: progress 200s linear forwards;
-}
-
-@keyframes progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-
-/* ГАЛЕРЕЯ (ОПТИМИЗИРОВАННАЯ) */
-.gallery{
-    position:fixed;
-    inset:0;
-    z-index:1;
-    pointer-events:none;
-    overflow: hidden;
-    will-change: transform; /* Подсказка для телефона для ускорения */
-}
-
-.floating-photo{
-    position:absolute;
-    bottom:-180px; /* Глубже вниз, чтобы не было видно "рождения" */
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-    animation: flyUp linear forwards;
-    opacity: 0;
-    will-change: transform, opacity;
-}
-
-.floating-photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Адаптивная анимация: фото пролетают быстрее и выше */
-@keyframes flyUp {
-    0% { transform: translateY(0) rotate(var(--r)); opacity: 0; }
-    5% { opacity: 0.9; }
-    90% { opacity: 0.9; }
-    100% { transform: translateY(-130vh) rotate(var(--r)); opacity: 0; }
-}
-
-/* МОДАЛКА (ПИСЬМО) */
-.modal-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.88);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    padding: 25px;
-}
-
-.modal-content {
-    background: #1a0022;
-    padding: 35px 25px;
-    border-radius: 28px;
-    max-width: 500px;
-    width: 100%;
-    max-height: 80vh;
-    overflow-y: auto; /* Внутренний скролл */
-    border: 1px solid rgba(255,182,221,0.25);
-    box-shadow: 0 10px 50px rgba(255,105,180,0.2);
-}
-
-.modal-text {
-    font-size: 16px;
-    line-height: 1.75;
-    color: #ffd6eb;
-    white-space: pre-line;
-    text-align: center;
-}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{overflow-x:hidden;overflow-y:auto;background:radial-gradient(circle at top,#2b0b38 0%,#120016 45%,#000 100%);min-height:100vh;font-family:'Montserrat',sans-serif;color:white;position:relative;}
+.stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.star{position:absolute;width:2px;height:2px;background:#ff9ed1;border-radius:50%;animation:blink 3s infinite;opacity:0.5;}
+@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
+.main{position:relative;z-index:10;width:100%;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;padding:70px 20px 40px;}
+.title{font-family:'Caveat',cursive;font-size:clamp(36px,9vw,60px);color:#ffb6dd;margin-bottom:30px;text-align:center;text-shadow:0 0 20px rgba(255,105,180,.7);}
+.love-heart{cursor:pointer;display:inline-block;color:#ff8cca;animation:heartBeat 1.8s infinite;}
+@keyframes heartBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.morse-wrapper{width:100%;max-width:600px;display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:40px;-webkit-user-select:none;user-select:none;}
+.morse{position:relative;color:#ff9ed1;font-size:19px;letter-spacing:2.5px;cursor:pointer;}
+.tooltip{position:absolute;top:-35px;left:50%;transform:translateX(-50%);background:rgba(20,0,30,0.95);padding:5px 10px;border-radius:8px;font-size:13px;opacity:0;pointer-events:none;transition:0.2s ease;white-space:nowrap;border:1px solid rgba(255,180,220,0.2);}
+.morse.active .tooltip{opacity:1;top:-45px;}
+.center-photo{width:100%;max-width:380px;margin-bottom:40px;}
+.center-photo img{width:100%;height:auto;border-radius:25px;border:2px solid rgba(255,180,220,0.2);box-shadow:0 10px 40px rgba(255,105,180,0.3);}
+.player{width:100%;max-width:320px;padding:20px;border-radius:24px;background:rgba(255,255,255,0.08);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,180,220,0.15);}
+.song-name{color:#ffd4ea;font-size:12px;margin-bottom:12px;text-align:center;}
+.bar{width:100%;height:4px;background:rgba(255,255,255,0.12);border-radius:10px;overflow:hidden;}
+.bar span{display:block;width:100%;height:100%;background:linear-gradient(90deg,#ff8cca,#ffb6dd);transform:scaleX(0);transform-origin:left;}
+.playing .bar span{animation:progress 200s linear forwards;}
+@keyframes progress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.gallery{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;}
+.floating-photo{position:absolute;bottom:-180px;border-radius:12px;overflow:hidden;box-shadow:0 8px 25px rgba(0,0,0,0.4);animation:flyUp linear forwards;opacity:0;will-change:transform,opacity;}
+.floating-photo img{width:100%;height:100%;object-fit:cover;}
+@keyframes flyUp{0%{transform:translateY(0) rotate(var(--r));opacity:0}5%{opacity:0.9}90%{opacity:0.9}100%{transform:translateY(-130vh) rotate(var(--r));opacity:0}}
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;justify-content:center;align-items:center;z-index:9999;padding:25px;}
+.modal-content{background:#1a0022;padding:35px 25px;border-radius:28px;max-width:500px;width:100%;max-height:80vh;overflow-y:auto;border:1px solid rgba(255,182,221,0.25);}
+.modal-text{font-size:16px;line-height:1.75;color:#ffd6eb;white-space:pre-line;text-align:center;}
 </style>
 </head>
-
 <body>
 
 <div class="stars"></div>
 <div class="gallery" id="gallery"></div>
-
-<audio id="bgMusic" loop>
-    <source src="music.mp3" type="audio/mpeg">
-</audio>
+<audio id="bgMusic" loop><source src="music.mp3" type="audio/mpeg"></audio>
 
 <div class="main">
-    <h1 class="title">
-        My Love
-        <span class="love-heart" id="mainHeart" onclick="openLoveMessage()">♡</span>
-    </h1>
-
+    <h1 class="title">My Love <span class="love-heart" onclick="openLoveMessage()">♡</span></h1>
     <div class="morse-wrapper" id="morseContainer">
         <div class="morse">.--.<div class="tooltip">Я</div></div>
         <div class="morse">-<div class="tooltip">Т</div></div>
         <div class="morse">.<div class="tooltip">Е</div></div>
         <div class="morse">-...<div class="tooltip">Б</div></div>
         <div class="morse">.--.<div class="tooltip">Я</div></div>
-        <div class="morse">--..<div class="tooltip">З</div></div>
-        <div class="morse">--<div class="tooltip">М</div></div>
-        <div class="morse">---<div class="tooltip">О</div></div>
-        <div class="morse">.-..<div class="tooltip">Л</div></div>
-        <div class="morse">---<div class="tooltip">О</div></div>
-        <div class="morse">-..<div class="tooltip">Д</div></div>
         <div class="morse">...<div class="tooltip">С</div></div>
         <div class="morse">..<div class="tooltip">И</div></div>
         <div class="morse">.-..<div class="tooltip">Л</div></div>
@@ -297,21 +62,8 @@ body{
         <div class="morse">-...<div class="tooltip">Б</div></div>
         <div class="morse">.-..<div class="tooltip">Л</div></div>
         <div class="morse">..--<div class="tooltip">Ю</div></div>
-        <div class="morse">--<div class="tooltip">М</div></div>
-        <div class="morse">---<div class="tooltip">О</div></div>
-        <div class="morse">.--.<div class="tooltip">Я</div></div>
-        <div class="morse">-.-<div class="tooltip">К</div></div>
-        <div class="morse">.-<div class="tooltip">A</div></div>
-        <div class="morse">-<div class="tooltip">T</div></div>
-        <div class="morse">..--<div class="tooltip">Ю</div></div>
-        <div class="morse">-.<div class="tooltip">Н</div></div>
-        <div class="morse">.--.<div class="tooltip">Я</div></div>
     </div>
-
-    <div class="center-photo">
-        <img src="main-photo.jpg">
-    </div>
-
+    <div class="center-photo"><img src="main-photo.jpg"></div>
     <div id="playerContainer" class="player">
         <div class="song-name">♡ Beautiful Boys — Нежная Любовь</div>
         <div class="bar"><span></span></div>
@@ -328,21 +80,18 @@ body{
 const audio = document.getElementById('bgMusic');
 const player = document.getElementById('playerContainer');
 
-// Запуск музыки при любом первом касании
-function startMusic() {
-    audio.play().then(() => {
-        player.classList.add('playing');
-    }).catch(e => {});
-}
-document.addEventListener('touchstart', startMusic, { once: true });
-document.addEventListener('click', startMusic, { once: true });
+function startMusic(){audio.play().then(()=>{player.classList.add('playing');}).catch(e=>{});}
+document.addEventListener('touchstart',startMusic,{once:true});
+document.addEventListener('click',startMusic,{once:true});
 
-// МОДАЛКА
+
+
 function openLoveMessage(){
     const modal = document.getElementById('loveModal');
     const modalText = document.getElementById('modalText');
-    // ВСТАВЬ СВОЙ ТЕКСТ СЮДА
-    modalText.innerText = `Я люблю тебя — не как случайную мысль и не как мимолётное чувство, а как нечто глубокое, что стало частью меня самого.
+    
+    const message = `
+    Я люблю тебя — не как случайную мысль и не как мимолётное чувство, а как нечто глубокое, что стало частью меня самого.
 
 Ты невероятно сильно заняла всё пространство в моих мыслях и в моём сердце. И чем больше проходит времени, тем яснее я понимаю: я уже не представляю своей жизни без тебя.
 
@@ -350,104 +99,29 @@ function openLoveMessage(){
 
 Я люблю в тебе всё без исключений. Твой голос — он остаётся в памяти даже тогда, когда ты молчишь. Твой взгляд — в нём есть что-то, что невозможно забыть. Твой смех — мягкий, тёплый, такой живой, что рядом с ним становится спокойнее даже в самые сложные моменты.
 
-И иногда я ловлю себя на мысли, что весь остальной мир теряет значение, если в нём не будет тебя. Потому что всё, что становится важным, сосредотачивается в одном человеке — в тебе. Я тебя очень сильно люблю моя родная Катюня🤍`;
+И иногда я ловлю себя на мысли, что весь остальной мир теряет значение, если в нём не будет тебя. Потому что всё, что становится важным, сосредотачивается в одном человеке — в тебе. Я тебя очень сильно люблю моя родная Катюня 🤍
+    `; 
+
+    modalText.innerText = message;
     modal.style.display = 'flex';
     startMusic();
-    // Догружаем еще 20 фото при открытии письма, чтобы галерея стала живее
-    loadNewBatch(20);
 }
 
-function closeLoveMessage() {
-    document.getElementById('loveModal').style.display = 'none';
-}
+// ============================================================
 
-// МОРЗЕ (ЛОГИКА ДЛЯ МОБИЛОК)
-const morseContainer = document.getElementById('morseContainer');
-// Обработка касания (touchstart)
-morseContainer.addEventListener('touchstart', (e) => {
-    const target = e.target.closest('.morse');
-    if (target) {
-        // Убираем active у других
-        document.querySelectorAll('.morse.active').forEach(m => m.classList.remove('active'));
-        // Добавляем этому
-        target.classList.add('active');
-        e.preventDefault(); // Запрет выделения текста
-    }
-});
-// Убираем active при клике в любое другое место
-document.addEventListener('touchstart', (e) => {
-    if (!e.target.closest('.morse')) {
-        document.querySelectorAll('.morse.active').forEach(m => m.classList.remove('active'));
-    }
-});
 
-// Звезды
-const starsContainer = document.querySelector('.stars');
-for(let i=0;i<50;i++){
-    const star = document.createElement('div');
-    star.classList.add('star');
-    star.style.left = Math.random()*100+'%';
-    star.style.top = Math.random()*100+'%';
-    starsContainer.appendChild(star);
-}
-
-// ===== ОПТИМИЗИРОВАННАЯ ГАЛЕРЕЯ =====
-const gallery = document.getElementById('gallery');
-const totalFilesCount = 230;
-let currentLoadedPhotos = []; // Список загруженных в память фото
-
-// Функция загрузки пачки фото в память браузера
-function loadNewBatch(count = 10) {
-    for(let i = 0; i < count; i++) {
-        const img = new Image();
-        const num = Math.floor(Math.random() * totalFilesCount) + 1;
-        img.src = `photo${num}.jpg`;
-        img.onload = () => {
-            currentLoadedPhotos.push(img);
-            // Если фото больше 50, удаляем старые, чтобы не переполнять память
-            if (currentLoadedPhotos.length > 50) currentLoadedPhotos.shift();
-        };
-    }
-}
-
-// Запускаем первую пачку (10 штук) сразу
-loadNewBatch(10);
-
-function createPhoto() {
-    // Если еще нет загруженных фото, пропускаем цикл
-    if (currentLoadedPhotos.length === 0) return;
-
-    // Выбираем случайное из тех, что уже загружены в память
-    const preloadedImg = currentLoadedPhotos[Math.floor(Math.random() * currentLoadedPhotos.length)];
-    
-    // Создаем клон изображения, чтобы не портить оригинал в списке
-    const imgClone = preloadedImg.cloneNode();
-
-    const div = document.createElement('div');
-    div.classList.add('floating-photo');
-    
-    // Адаптивные размеры: меньше на мобилках
-    const isMobile = window.innerWidth < 500;
-    const width = isMobile ? (75 + Math.random()*50) : (120 + Math.random()*70);
-    
-    div.style.width = width + 'px';
-    div.style.left = Math.random() * (window.innerWidth - width) + 'px';
-    div.style.setProperty('--r', (-15 + Math.random()*30) + 'deg');
-    // Пролетают быстрее: от 7 до 12 секунд
-    div.style.animationDuration = (7 + Math.random()*5) + 's';
-    
-    div.appendChild(imgClone);
-    gallery.appendChild(div);
-    
-    // Удаляем элемент после завершения анимации
-    setTimeout(() => div.remove(), 12000);
-}
-
-// Появляются каждые 1.8 секунды — это создаст густой поток
-setInterval(createPhoto, 1800);
-// Первые 3 фото через секунду
-setTimeout(() => { for(let i=0; i<3; i++) setTimeout(createPhoto, i*400); }, 1000);
-
+function closeLoveMessage(){document.getElementById('loveModal').style.display='none';}
+const morseContainer=document.getElementById('morseContainer');
+morseContainer.addEventListener('touchstart',(e)=>{const target=e.target.closest('.morse');if(target){document.querySelectorAll('.morse.active').forEach(m=>m.classList.remove('active'));target.classList.add('active');e.preventDefault();}});
+document.addEventListener('touchstart',(e)=>{if(!e.target.closest('.morse')){document.querySelectorAll('.morse.active').forEach(m=>m.classList.remove('active'));}});
+const starsContainer=document.querySelector('.stars');
+for(let i=0;i<50;i++){const star=document.createElement('div');star.classList.add('star');star.style.left=Math.random()*100+'%';star.style.top=Math.random()*100+'%';starsContainer.appendChild(star);}
+const gallery=document.getElementById('gallery');
+const totalFilesCount=230;
+let lastPhotoNum=-1;
+function createPhoto(){let num;do{num=Math.floor(Math.random()*totalFilesCount)+1;}while(num===lastPhotoNum);lastPhotoNum=num;const img=new Image();img.src=`photo${num}.jpg`;img.onload=()=>{const div=document.createElement('div');div.classList.add('floating-photo');const isMobile=window.innerWidth<500;const width=isMobile?(80+Math.random()*50):(120+Math.random()*80);div.style.width=width+'px';div.style.left=Math.random()*(window.innerWidth-width)+'px';div.style.setProperty('--r',(-15+Math.random()*30)+'deg');div.style.animationDuration=(8+Math.random()*6)+'s';div.appendChild(img);gallery.appendChild(div);setTimeout(()=>div.remove(),15000);};}
+setInterval(createPhoto,2000);
+for(let i=0;i<4;i++)setTimeout(createPhoto,i*600);
 </script>
 </body>
 </html>
