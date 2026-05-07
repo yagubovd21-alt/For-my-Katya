@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>My Love ♡</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Caveat:wght@700&display=swap" rel="stylesheet">
@@ -12,12 +12,11 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    /* Убираем лишние выделения при клике на мобилках */
     -webkit-tap-highlight-color: transparent;
 }
 
 body{
-    /* Разрешаем скролл по вертикали, но скрываем по горизонтали */
+    /* Разрешаем скролл */
     overflow-x: hidden;
     overflow-y: auto; 
     background: radial-gradient(circle at top,#2b0b38 0%,#120016 45%,#000 100%);
@@ -25,15 +24,9 @@ body{
     font-family:'Montserrat',sans-serif;
     color:white;
     position:relative;
-    line-height: 1.5;
 }
 
-/* Настройка плавного скролла */
-html {
-    scroll-behavior: smooth;
-}
-
-/* ===== ФОН (Звезды) ===== */
+/* Звезды на фоне всегда зафиксированы */
 .stars{
     position:fixed;
     inset:0;
@@ -56,7 +49,6 @@ html {
     100%{opacity:.2}
 }
 
-/* ===== ГЛАВНЫЙ КОНТЕЙНЕР ===== */
 .main{
     position:relative;
     z-index:10;
@@ -64,14 +56,14 @@ html {
     min-height:100vh;
     display:flex;
     flex-direction:column;
-    justify-content:center;
+    justify-content:flex-start; /* Начинаем сверху для удобства скролла */
     align-items:center;
-    padding: 40px 20px; /* Отступы сверху и снизу */
+    padding: 60px 20px;
 }
 
 .title{
     font-family:'Caveat',cursive;
-    font-size: clamp(40px, 10vw, 64px); /* Адаптивный размер шрифта */
+    font-size: clamp(38px, 8vw, 64px);
     color:#ffb6dd;
     margin-bottom:30px;
     text-align: center;
@@ -80,18 +72,23 @@ html {
 
 .love-heart{
     cursor:pointer;
-    transition:.3s;
     display:inline-block;
-    margin-left:5px;
+    animation: heartBeat 1.5s infinite;
 }
 
-/* ===== МОРЗЕ (Сделаем компактнее для мобилок) ===== */
+@keyframes heartBeat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
 .morse-wrapper{
-    max-width: 100%;
+    width: 100%;
+    max-width: 600px;
     display:flex;
     flex-wrap:wrap;
     justify-content:center;
-    gap: 8px;
+    gap: 10px;
     margin-bottom: 40px;
 }
 
@@ -100,67 +97,60 @@ html {
     color:#ff9ed1;
     font-size: 18px;
     letter-spacing: 2px;
-    cursor:pointer;
 }
 
 .tooltip{
     position:absolute;
-    bottom:-40px;
+    bottom:-35px;
     left:50%;
     transform:translateX(-50%);
-    background:rgba(17,0,25,.95);
-    border:1px solid rgba(255,180,220,.25);
-    padding:5px 10px;
-    border-radius:10px;
-    opacity:0;
-    transition:.3s;
-    pointer-events:none;
+    background:rgba(20,0,30,0.9);
+    padding:4px 8px;
+    border-radius:8px;
     font-size:12px;
-    z-index: 100;
+    opacity:0;
+    pointer-events:none;
 }
 
-.morse:active .tooltip { opacity: 1; } /* Показ при нажатии на телефоне */
+/* На мобилках показываем перевод при нажатии */
+.morse:active .tooltip { opacity: 1; }
 
-/* ===== ГЛАВНОЕ ФОТО ===== */
 .center-photo{
-    position:relative;
-    margin-bottom:30px;
     width: 100%;
-    max-width: 400px;
-    display: flex;
-    justify-content: center;
+    max-width: 380px;
+    margin-bottom: 35px;
+    position: relative;
 }
 
 .center-photo img{
     width: 100%;
     height: auto;
-    border-radius:25px;
-    border:1px solid rgba(255,180,220,.25);
-    box-shadow:0 0 35px rgba(255,105,180,.2);
+    border-radius:30px;
+    border:2px solid rgba(255,180,220,0.2);
+    box-shadow:0 0 40px rgba(255,105,180,0.3);
 }
 
-/* ===== ПЛЕЕР ===== */
 .player{
     width: 100%;
-    max-width:350px;
-    padding:15px;
-    border-radius:20px;
-    background:rgba(255,255,255,.05);
-    border:1px solid rgba(255,180,220,.2);
+    max-width:320px;
+    padding:20px;
+    border-radius:24px;
+    background:rgba(255,255,255,0.07);
     backdrop-filter:blur(10px);
+    border:1px solid rgba(255,180,220,0.2);
 }
 
 .song-name{
     color:#ffd4ea;
-    font-size:13px;
-    margin-bottom: 10px;
+    font-size:12px;
+    margin-bottom: 12px;
     text-align: center;
 }
 
 .bar{
     width:100%;
     height:4px;
-    background:rgba(255,255,255,.1);
+    background:rgba(255,255,255,0.1);
     border-radius:10px;
     overflow:hidden;
 }
@@ -169,13 +159,13 @@ html {
     display:block;
     width:100%;
     height:100%;
-    background:#ff8cca;
+    background: linear-gradient(90deg, #ff8cca, #ffb6dd);
     transform: scaleX(0);
     transform-origin: left;
 }
 
 .playing .bar span {
-    animation: progress 180s linear forwards;
+    animation: progress 200s linear forwards;
 }
 
 @keyframes progress {
@@ -183,82 +173,69 @@ html {
     to { transform: scaleX(1); }
 }
 
-.bottom-text{
-    margin-top:25px;
-    color:#ffd6eb;
-    font-size: 14px;
-    opacity:.8;
-    text-align:center;
-}
-
-/* ===== ЛЕТАЮЩИЕ ФОТО ===== */
+/* ГАЛЕРЕЯ */
 .gallery{
     position:fixed;
     inset:0;
     z-index:1;
     pointer-events:none;
+    overflow: hidden;
 }
 
 .floating-photo{
     position:absolute;
-    bottom:-200px;
+    bottom:-150px;
     border-radius:15px;
     overflow:hidden;
-    box-shadow:0 0 20px rgba(255,105,180,.1);
-    animation:fly linear forwards;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    animation: flyUp linear forwards;
+    opacity: 0;
 }
 
-.floating-photo img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-@keyframes fly{
-    from{ transform: translateY(0) rotate(var(--rotate)); opacity: 0; }
-    10%{ opacity: 0.8; }
-    90%{ opacity: 0.8; }
-    to{ transform: translateY(-130vh) rotate(var(--rotate)); opacity: 0; }
-}
-
-/* ===== МОДАЛЬНОЕ ОКНО ===== */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
+.floating-photo img {
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.9);
+    object-fit: cover;
+}
+
+@keyframes flyUp {
+    0% { transform: translateY(0) rotate(var(--r)); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(-120vh) rotate(var(--r)); opacity: 0; }
+}
+
+/* МОДАЛКА */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(5px);
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 2000;
+    z-index: 9999;
     padding: 20px;
 }
 
 .modal-content {
     background: #1a0022;
-    border: 1px solid rgba(255, 182, 221, 0.3);
-    padding: 30px 20px;
-    border-radius: 25px;
-    max-height: 80vh;
-    overflow-y: auto; /* Скролл внутри письма */
+    padding: 30px 25px;
+    border-radius: 30px;
+    max-width: 500px;
     width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 1px solid rgba(255,182,221,0.3);
 }
 
 .modal-text {
     font-size: 16px;
-    line-height: 1.6;
+    line-height: 1.7;
     color: #ffd6eb;
     white-space: pre-line;
-}
-
-.close-modal {
-    display: block;
-    text-align: right;
-    font-size: 30px;
-    color: #ffb6dd;
-    margin-bottom: 10px;
+    text-align: center;
 }
 </style>
 </head>
@@ -284,6 +261,13 @@ html {
         <div class="morse">.<div class="tooltip">Е</div></div>
         <div class="morse">-...<div class="tooltip">Б</div></div>
         <div class="morse">.--.<div class="tooltip">Я</div></div>
+        <div class="morse">-...<div class="tooltip">Б</div></div>
+        <div class="morse">.<div class="tooltip">Е</div></div>
+        <div class="morse">--..<div class="tooltip">З</div></div>
+        <div class="morse">..-<div class="tooltip">У</div></div>
+        <div class="morse">--<div class="tooltip">М</div></div>
+        <div class="morse">-.<div class="tooltip">Н</div></div>
+        <div class="morse">---<div class="tooltip">О</div></div>
         <div class="morse">...<div class="tooltip">С</div></div>
         <div class="morse">..<div class="tooltip">И</div></div>
         <div class="morse">.-..<div class="tooltip">Л</div></div>
@@ -295,23 +279,29 @@ html {
         <div class="morse">-...<div class="tooltip">Б</div></div>
         <div class="morse">.-..<div class="tooltip">Л</div></div>
         <div class="morse">..--<div class="tooltip">Ю</div></div>
+        <div class="morse">--<div class="tooltip">М</div></div>
+        <div class="morse">---<div class="tooltip">О</div></div>
+        <div class="morse">.--.<div class="tooltip">Я</div></div>
+        <div class="morse">-.-<div class="tooltip">К</div></div>
+        <div class="morse">.-<div class="tooltip">А</div></div>
+        <div class="morse">-<div class="tooltip">Т</div></div>
+        <div class="morse">..--<div class="tooltip">Ю</div></div>
+        <div class="morse">-.<div class="tooltip">Н</div></div>
+        <div class="morse">.--.<div class="tooltip">Я</div></div>
     </div>
 
     <div class="center-photo">
-        <img src="main-photo.jpg" alt="Love">
+        <img src="main-photo.jpg">
     </div>
 
     <div id="playerContainer" class="player">
         <div class="song-name">♡ Beautiful Boys — Нежная Любовь</div>
         <div class="bar"><span></span></div>
     </div>
-
-    <p class="bottom-text">♡ Листай вниз, тут уютно ♡</p>
 </div>
 
-<div id="loveModal" class="modal-overlay" onclick="closeLoveMessage(event)">
+<div id="loveModal" class="modal-overlay" onclick="closeLoveMessage()">
     <div class="modal-content" onclick="event.stopPropagation()">
-        <span class="close-modal" onclick="closeLoveMessage(event)">&times;</span>
         <div class="modal-text" id="modalText"></div>
     </div>
 </div>
@@ -323,35 +313,28 @@ const player = document.getElementById('playerContainer');
 function startMusic() {
     audio.play().then(() => {
         player.classList.add('playing');
-    }).catch(e => console.log("Нужен клик"));
+    }).catch(e => {});
 }
 
+document.addEventListener('touchstart', startMusic, { once: true });
 document.addEventListener('click', startMusic, { once: true });
 
 function openLoveMessage(){
     const modal = document.getElementById('loveModal');
     const modalText = document.getElementById('modalText');
-    const message = `Я люблю тебя — не как случайную мысль и не как мимолётное чувство, а как нечто глубокое, что стало частью меня самого.
-
-Ты невероятно сильно заняла всё пространство в моих мыслях и в моём сердце. И чем больше проходит времени, тем яснее я понимаю: я уже не представляю своей жизни без тебя.
-
-Мне хочется делить с тобой всё — не частями, не иногда, а полностью, напополам, как делят самое важное. Хочется, чтобы ты была рядом в каждом моём дне, чтобы каждый мой день неизбежно был связан с тобой, наполнен тобой, твоим присутствием, твоей энергией, твоим светом.
-
-Я люблю в тебе всё без исключений. Твой голос — он остаётся в памяти даже тогда, когда ты молчишь. Твой взгляд — в нём есть что-то, что невозможно забыть. Твой смех — мягкий, тёплый, такой живой, что рядом с ним становится спокойнее даже в самые сложные моменты.
-
-И иногда я ловлю себя на мысли, что весь остальной мир теряет значение, если в нём не будет тебя. Потому что всё, что становится важным, сосредотачивается в одном человеке — в тебе. Я тебя очень сильно люблю моя родная Катюня ❤`;
-    modalText.innerText = message;
+    // ВСТАВЬ СВОЙ ТЕКСТ НИЖЕ
+    modalText.innerText = `Я люблю тебя — не как случайную мысль... (твой полный текст)`;
     modal.style.display = 'flex';
     startMusic();
 }
 
-function closeLoveMessage(e) {
+function closeLoveMessage() {
     document.getElementById('loveModal').style.display = 'none';
 }
 
 // Звезды
 const starsContainer = document.querySelector('.stars');
-for(let i=0;i<80;i++){
+for(let i=0;i<60;i++){
     const star = document.createElement('div');
     star.classList.add('star');
     star.style.left = Math.random()*100+'%';
@@ -359,32 +342,41 @@ for(let i=0;i<80;i++){
     starsContainer.appendChild(star);
 }
 
-// Фото (обновленный скрипт)
+// УЛУЧШЕННЫЙ СКРИПТ ФОТО ДЛЯ МОБИЛОК
 const gallery = document.getElementById('gallery');
-const photosCount = 230; 
+const totalPhotos = 230;
 
-function createPhoto(){
-    const num = Math.floor(Math.random() * photosCount) + 1;
+function createPhoto() {
+    const num = Math.floor(Math.random() * totalPhotos) + 1;
     const img = new Image();
-    img.src = `photo${num}.jpg?v=${Math.random()}`; // Обход кэша
     
+    // Важно: на мобилках лучше не перегружать запросами
+    img.src = `photo${num}.jpg`;
+
     img.onload = () => {
-        const photo = document.createElement('div');
-        photo.classList.add('floating-photo');
-        const size = 100 + Math.random()*80; // Чуть меньше для мобилок
-        photo.style.left = Math.random()*85 + '%';
-        photo.style.width = size + 'px';
-        photo.style.height = 'auto';
-        photo.style.animationDuration = (15 + Math.random()*15) + 's';
-        photo.style.setProperty('--rotate', (-15 + Math.random()*30) + 'deg');
-        photo.appendChild(img);
-        gallery.appendChild(photo);
-        setTimeout(()=>{ photo.remove(); }, 30000);
+        const div = document.createElement('div');
+        div.classList.add('floating-photo');
+        
+        // Размеры для мобилок
+        const width = window.innerWidth < 500 ? (70 + Math.random()*60) : (120 + Math.random()*80);
+        
+        div.style.width = width + 'px';
+        div.style.left = Math.random() * (window.innerWidth - width) + 'px';
+        div.style.setProperty('--r', (-15 + Math.random()*30) + 'deg');
+        div.style.animationDuration = (8 + Math.random()*10) + 's';
+        
+        div.appendChild(img);
+        gallery.appendChild(div);
+        
+        setTimeout(() => div.remove(), 18000);
     };
 }
 
-setInterval(createPhoto, 2500);
-for(let i=0; i<6; i++) setTimeout(createPhoto, i*1000);
+// Запускаем чаще, но меньшее количество одновременно
+setInterval(createPhoto, 2000);
+// Первый запуск нескольких штук
+for(let i=0; i<5; i++) setTimeout(createPhoto, i*500);
+
 </script>
 </body>
 </html>
